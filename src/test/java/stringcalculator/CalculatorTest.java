@@ -2,6 +2,7 @@ package stringcalculator;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -34,6 +35,15 @@ class CalculatorTest {
     @ParameterizedTest
     @CsvSource({"+ 2 - 3", "1 + 2 - -"})
     void validateFormulaPosition_fail(String formula) {
+        // then
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> calculator.calculate(formula))
+                .withMessageContaining(ErrorMessage.INVALID_FORMULA);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1", "2 +"})
+    void validateFormulaLength_fail(String formula) {
         // then
         Assertions.assertThatIllegalArgumentException()
                 .isThrownBy(() -> calculator.calculate(formula))
