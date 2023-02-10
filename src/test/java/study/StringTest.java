@@ -1,10 +1,14 @@
 package study;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class StringTest {
     @Test
@@ -58,5 +62,32 @@ public class StringTest {
 
         // then
         assertThat(numbers).isEqualTo("1,2");
+    }
+
+    @ParameterizedTest
+    @CsvSource({"0,a", "1,b", "2,c"})
+    @DisplayName("charAt 메소드를 통해 특정 위치의 문자 가져오기")
+    void charAt(int index, char actual) {
+        // given
+        String input = "abc";
+
+        // when
+        char extractedByInput = input.charAt(index);
+
+        // then
+        assertThat(extractedByInput).isEqualTo(actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {-1, 3 ,4})
+    @DisplayName("charAt 메소드 실행시 인덱스 벗어나는 예외 테스트")
+    void charAt_failWithException(int index) {
+        // given
+        String input = "abc";
+
+        // when
+        // then
+        assertThatThrownBy(() -> input.charAt(index)).isInstanceOf(StringIndexOutOfBoundsException.class)
+                .hasMessageContaining("String index out of range: " + index);
     }
 }
