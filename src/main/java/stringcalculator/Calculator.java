@@ -10,18 +10,28 @@ public class Calculator {
     public int calculate(final String formula) {
         String[] formulaElements = formula.split(" ");
         validate(formulaElements);
-        for (int i = 0; i < formulaElements.length; i++) {
 
-        }
         return 0;
     }
 
     private void validate(final String[] formulaElements) {
-        boolean result = Arrays.stream(formulaElements)
+        boolean elementCheck = Arrays.stream(formulaElements)
                 .allMatch(element -> isNumber(element) || isOperator(element));
-        if (!result) {
+        checkPositionOfElement(formulaElements);
+        if (!elementCheck) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FORMULA);
         }
+    }
+
+    private boolean checkPositionOfElement(final String[] formulaElements) {
+        for (int i = 0; i < formulaElements.length; i++) {
+            if (i % 2 == 0) {
+                isNumber(formulaElements[i]);
+                continue;
+            }
+            isOperator(formulaElements[i]);
+        }
+        return true;
     }
 
     private boolean isOperator(final String element) {
