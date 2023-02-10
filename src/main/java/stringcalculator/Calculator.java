@@ -17,14 +17,18 @@ public class Calculator {
 
     private int calculateElements(final String[] formulaElements) {
         for (String element : formulaElements) {
-            if (isNumber(element)) {
-                operands.push(Integer.parseInt(element));
-                calculateUnitFormula();
-                continue;
-            }
-            operators.push(element);
+            calculateDividedElement(element);
         }
         return operands.pop();
+    }
+
+    private void calculateDividedElement(final String element) {
+        if (isNumber(element)) {
+            operands.push(Integer.parseInt(element));
+            calculateUnitFormula();
+            return;
+        }
+        operators.push(element);
     }
 
     private void calculateUnitFormula() {
@@ -50,25 +54,27 @@ public class Calculator {
 
     private void validate(final String[] formulaElements) {
         boolean elementCheck = Arrays.stream(formulaElements)
-                .allMatch(element -> isNumber(element)
-                        || isOperator(element));
-        boolean positionCheck = checkPositionOfElement(formulaElements);
+                .allMatch(element -> isNumber(element) || isOperator(element));
+        boolean positionCheck = checkPosition(formulaElements);
 
         if (!(elementCheck && positionCheck && formulaElements.length >= MINIMUM_FORMULA_LENGTH)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FORMULA);
         }
     }
 
-    private boolean checkPositionOfElement(final String[] formulaElements) {
+    private boolean checkPosition(final String[] formulaElements) {
         boolean result = true;
         for (int i = 0; i < formulaElements.length; i++) {
-            if (i % 2 == 0) {
-                result &= isNumber(formulaElements[i]);
-                continue;
-            }
-            result &= isOperator(formulaElements[i]);
+            result &= isRightPosition(i, formulaElements[i]);
         }
         return result;
+    }
+
+    private boolean isRightPosition(final int index, final String element) {
+        if (index % 2 == 0) {
+            return isNumber(element);
+        }
+        return isOperator(element);
     }
 
     private boolean isOperator(final String element) {
