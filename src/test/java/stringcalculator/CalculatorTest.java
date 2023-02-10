@@ -29,6 +29,14 @@ class CalculatorTest {
         Assertions.assertThatIllegalArgumentException()
                 .isThrownBy(() -> calculator.calculate(formula))
                 .withMessageContaining(ErrorMessage.INVALID_FORMULA);
+    }
 
+    @ParameterizedTest
+    @CsvSource({"+ 2 - 3", "1 + 2 - -"})
+    void validateFormulaPosition_fail(String formula) {
+        // then
+        Assertions.assertThatIllegalArgumentException()
+                .isThrownBy(() -> calculator.calculate(formula))
+                .withMessageContaining(ErrorMessage.INVALID_FORMULA);
     }
 }
