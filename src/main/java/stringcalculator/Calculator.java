@@ -17,21 +17,22 @@ public class Calculator {
     private void validate(final String[] formulaElements) {
         boolean elementCheck = Arrays.stream(formulaElements)
                 .allMatch(element -> isNumber(element) || isOperator(element));
-        checkPositionOfElement(formulaElements);
-        if (!elementCheck) {
+        boolean positionCheck = checkPositionOfElement(formulaElements);
+        if (!(elementCheck && positionCheck)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FORMULA);
         }
     }
 
     private boolean checkPositionOfElement(final String[] formulaElements) {
+        boolean result = true;
         for (int i = 0; i < formulaElements.length; i++) {
             if (i % 2 == 0) {
-                isNumber(formulaElements[i]);
+                result &= isNumber(formulaElements[i]);
                 continue;
             }
-            isOperator(formulaElements[i]);
+            result &= isOperator(formulaElements[i]);
         }
-        return true;
+        return result;
     }
 
     private boolean isOperator(final String element) {
