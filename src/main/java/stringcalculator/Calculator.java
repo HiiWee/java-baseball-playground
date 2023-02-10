@@ -4,18 +4,48 @@ import java.util.Arrays;
 import java.util.Stack;
 
 public class Calculator {
-    public static final int MINIMUM_FORMULA_LENGTH = 3;
-    private final Stack<Character> operators = new Stack<>();
+    private static final int MINIMUM_FORMULA_LENGTH = 3;
+
+    private final Stack<String> operators = new Stack<>();
     private final Stack<Integer> operands = new Stack<>();
 
-    public int calculate(final String formula) {
+    public int inputFormula(final String formula) {
         String[] formulaElements = formula.split(" ");
         validate(formulaElements);
         return calculateElements(formulaElements);
     }
 
     private int calculateElements(final String[] formulaElements) {
-        return 0;
+        for (String element : formulaElements) {
+            if (isNumber(element)) {
+                operands.push(Integer.parseInt(element));
+                calculateUnitFormula();
+                continue;
+            }
+            operators.push(element);
+        }
+        return operands.pop();
+    }
+
+    private void calculateUnitFormula() {
+        if (operands.size() < 2) {
+            return;
+        }
+        operands.push(calculate(operands.pop(), operands.pop(), operators.pop()));
+
+    }
+
+    private int calculate(final int rightOperand, final int leftOperand, final String operator) {
+        if (operator.equals("+")) {
+            return leftOperand + rightOperand;
+        }
+        if (operator.equals("-")) {
+            return leftOperand - rightOperand;
+        }
+        if (operator.equals("*")) {
+            return leftOperand * rightOperand;
+        }
+        return leftOperand / rightOperand;
     }
 
     private void validate(final String[] formulaElements) {
@@ -24,7 +54,7 @@ public class Calculator {
                         || isOperator(element));
         boolean positionCheck = checkPositionOfElement(formulaElements);
 
-        if (!(elementCheck && positionCheck && formulaElements.length >= 3)) {
+        if (!(elementCheck && positionCheck && formulaElements.length >= MINIMUM_FORMULA_LENGTH)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FORMULA);
         }
     }

@@ -2,7 +2,6 @@ package stringcalculator;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -20,7 +19,7 @@ class CalculatorTest {
     void validateFormula_success(String formula) {
         // then
         Assertions.assertThatNoException()
-                .isThrownBy(() -> calculator.calculate(formula));
+                .isThrownBy(() -> calculator.inputFormula(formula));
     }
 
     @ParameterizedTest
@@ -28,7 +27,7 @@ class CalculatorTest {
     void validateFormula_fail(String formula) {
         // then
         Assertions.assertThatIllegalArgumentException()
-                .isThrownBy(() -> calculator.calculate(formula))
+                .isThrownBy(() -> calculator.inputFormula(formula))
                 .withMessageContaining(ErrorMessage.INVALID_FORMULA);
     }
 
@@ -37,7 +36,7 @@ class CalculatorTest {
     void validateFormulaPosition_fail(String formula) {
         // then
         Assertions.assertThatIllegalArgumentException()
-                .isThrownBy(() -> calculator.calculate(formula))
+                .isThrownBy(() -> calculator.inputFormula(formula))
                 .withMessageContaining(ErrorMessage.INVALID_FORMULA);
     }
 
@@ -46,7 +45,7 @@ class CalculatorTest {
     void validateFormulaLength_fail(String formula) {
         // then
         Assertions.assertThatIllegalArgumentException()
-                .isThrownBy(() -> calculator.calculate(formula))
+                .isThrownBy(() -> calculator.inputFormula(formula))
                 .withMessageContaining(ErrorMessage.INVALID_FORMULA);
     }
 }
