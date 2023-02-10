@@ -44,4 +44,19 @@ public class StringTest {
             assertThat(splitNumber).contains("1");
         });
     }
+
+    @Test
+    @DisplayName("\"(1,2)\" 에서 substring()을 활용해 ()을 제거하고 \"1,2\"를 반환")
+    void substring() {
+        // given
+        String numbersWithBracket = "(1,2)";
+
+        // when
+        int start = numbersWithBracket.indexOf("1");
+        int end = numbersWithBracket.indexOf(")");
+        String numbers = numbersWithBracket.substring(start, end);
+
+        // then
+        assertThat(numbers).isEqualTo("1,2");
+    }
 }
