@@ -4,21 +4,27 @@ import java.util.Arrays;
 import java.util.Stack;
 
 public class Calculator {
+    public static final int MINIMUM_FORMULA_LENGTH = 3;
     private final Stack<Character> operators = new Stack<>();
     private final Stack<Integer> operands = new Stack<>();
 
     public int calculate(final String formula) {
         String[] formulaElements = formula.split(" ");
         validate(formulaElements);
+        return calculateElements(formulaElements);
+    }
 
+    private int calculateElements(final String[] formulaElements) {
         return 0;
     }
 
     private void validate(final String[] formulaElements) {
         boolean elementCheck = Arrays.stream(formulaElements)
-                .allMatch(element -> isNumber(element) || isOperator(element));
+                .allMatch(element -> isNumber(element)
+                        || isOperator(element));
         boolean positionCheck = checkPositionOfElement(formulaElements);
-        if (!(elementCheck && positionCheck)) {
+
+        if (!(elementCheck && positionCheck && formulaElements.length >= 3)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FORMULA);
         }
     }
