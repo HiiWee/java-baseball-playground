@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class SetTest {
@@ -39,5 +40,13 @@ public class SetTest {
     void setContains(int value) {
         // then
         assertThat(numbers.contains(value)).isTrue();
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1,true", "2,true", "3,true", "4,false", "5,false"})
+    @DisplayName("Set의 값 존재 및 실패 테스트")
+    void setContains_withMultipleCase(int value, boolean actualValue) {
+        // then
+        assertThat(numbers.contains(value)).isEqualTo(actualValue);
     }
 }
